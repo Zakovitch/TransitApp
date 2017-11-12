@@ -33,4 +33,5 @@ dependencies {
     //Android Annotation
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile project(path: ':backendmanager')
 }

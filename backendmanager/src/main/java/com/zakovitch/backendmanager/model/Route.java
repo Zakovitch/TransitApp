@@ -48,6 +48,9 @@ public class Route {
     @SerializedName("price")
     private Price price;
 
+    //Route time
+    private int routeTime;
+
     @Nullable
     public RouteType getType() {
         return type;
@@ -98,13 +101,29 @@ public class Route {
         Returns price with currency ex: 15 Euro
      */
     public String getFullPrice() {
-        return price.getAmount()+" "+price.getCyrrency();
+        if(price!=null){
+            return price.getAmount()+" "+price.getCyrrency();
+        }else return "";
     }
 
     public void setPrice(@Nullable Price price) {
         this.price = price;
     }
 
+    public int getRouteTime() {
+        int totalTime =0;
+
+        for (Segment segment :segments) {
+            totalTime+=segment.getSegmentTime();
+        }
+
+        return totalTime;
+
+    }
+
+    public void setRouteTime(int routeTime) {
+        this.routeTime = routeTime;
+    }
 
     public RouteProperties getProperties() {
 

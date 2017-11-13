@@ -3,8 +3,12 @@ package com.zakovitch.backendmanager;
 import android.content.Context;
 import android.util.Log;
 import com.google.gson.Gson;
+import com.zakovitch.backendmanager.event.OnParseDataError;
+import com.zakovitch.backendmanager.event.OnParseDataSucceeded;
 import com.zakovitch.backendmanager.model.Response;
 import com.zakovitch.backendmanager.model.properties.CarSharingProperties;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -36,7 +40,11 @@ public class DataManager {
             Log.d(TAG,"TravelMode "+response.getRoutes().get(3).getSegments().get(3).getTravelMode());
             Log.d(TAG,"TravelMode "+((CarSharingProperties)response.getRoutes().get(3).getProperties()).getAddress());
 
-        }
+            //Post succeed event
+            EventBus.getDefault().post(new OnParseDataSucceeded(response));
+
+        }else //Post error event
+            EventBus.getDefault().post(new OnParseDataError("error parsing"));
 
     }
 }

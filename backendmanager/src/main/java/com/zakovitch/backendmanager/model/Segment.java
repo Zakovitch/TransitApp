@@ -2,11 +2,12 @@ package com.zakovitch.backendmanager.model;
 
 import android.support.annotation.Nullable;
 
-
 import com.google.gson.annotations.SerializedName;
 import com.zakovitch.backendmanager.model.enums.TravelMode;
+import com.zakovitch.backendmanager.utils.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Zakovitch on 12/11/2017.
@@ -55,6 +56,9 @@ public class Segment {
     @Nullable
     @SerializedName("polyline")
     private String polyline;
+
+    //segment time in minutes
+    private int segmentTime;
 
 
     @Nullable
@@ -127,5 +131,19 @@ public class Segment {
 
     public void setPolyline(@Nullable String polyline) {
         this.polyline = polyline;
+    }
+
+    public int getSegmentTime() {
+        if(numStops >=0){
+            if (numStops == 0) numStops++;
+            Date startDate = TimeUtils.getDateFromString(stops.get(0).getDatetime());
+            Date endDate = TimeUtils.getDateFromString(stops.get(numStops).getDatetime());
+            return TimeUtils.getTimeDifferentInMinutes(startDate,endDate);
+
+        }else return 0;
+
+    }
+
+    public void setSegmentTime(int segmentTime) {
     }
 }

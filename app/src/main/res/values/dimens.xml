@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="card_padding">10dp</dimen>
+    <dimen name="card_views_margin">8dp</dimen>
+    <dimen name="routes_type_margin">8dp</dimen>
+
+
+
+    <dimen name="travel_mode_card_RL_padding">6dp</dimen>
+    <dimen name="travel_mode_card_TB_padding">4dp</dimen>
+    <dimen name="travel_mode_card_views_margin">4dp</dimen>
+    <dimen name="travel_mode_card_height">64dp</dimen>
+    <dimen name="travel_mode_card_width">40dp</dimen>
+
+
+</resources>

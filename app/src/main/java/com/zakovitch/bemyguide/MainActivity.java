@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         if(response.getRoutes().size()>0){
             adapter = new RouteAdapter(response.getRoutes(),this);
             routeRecycleView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
         }
     }
 

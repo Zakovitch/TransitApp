@@ -52,10 +52,12 @@ public class TravelModeViewUtils {
         if(walkingView!=null){
 
             String time = (segment.getStops().get(0)!=null) ? TimeUtils.getTime(segment.getStops().get(0).getDatetime()) : "N/A";
+            String timeEnd = (segment.getStops().get(segment.getNumStops())!=null) ? TimeUtils.getTime(segment.getStops().get(segment.getNumStops()).getDatetime()) : "N/A";
             String startDestination = (segment.getStops().get(0).getName()!=null) ? segment.getStops().get(0).getName() : "Start";
 
             //Update info
             TextView timeView = walkingView.findViewById(R.id.lbl_time);
+            TextView timeEndView = walkingView.findViewById(R.id.lbl_time_end);
             TextView startDestinationView = walkingView.findViewById(R.id.lbl_start_place);
             TextView endDestinationView = walkingView.findViewById(R.id.lbl_end_place);
             TextView walkingTimeView = walkingView.findViewById(R.id.lbl_walking_time);
@@ -64,9 +66,11 @@ public class TravelModeViewUtils {
             timeView.setText(time);
             startDestinationView.setText(startDestination);
             walkingTimeView.setText(StringUtils.getTravelModeString(segment.getTravelMode(),context)+" "+segment.getSegmentTime()+" "+context.getString(R.string.time_minute));
-            if(isLast)
-                endDestinationView.setText(segment.getStops().get(segment.getNumStops()).getName());
 
+            if(isLast) {
+                endDestinationView.setText(segment.getDescription());
+                timeEndView.setText(timeEnd);
+            }
             startDestinationView.setTextColor(Color.parseColor(segment.getColor()));
             walkingTimeView.setTextColor(Color.parseColor(segment.getColor()));
 
@@ -92,10 +96,12 @@ public class TravelModeViewUtils {
         if(publicTransport!=null){
 
             String time = (segment.getStops().get(0)!=null) ? TimeUtils.getTime(segment.getStops().get(0).getDatetime()) : "N/A";
+            String timeEnd = (segment.getStops().get(segment.getNumStops())!=null) ? TimeUtils.getTime(segment.getStops().get(segment.getNumStops()).getDatetime()) : "N/A";
             String startDestination = (segment.getStops().get(0).getName()!=null) ? segment.getStops().get(0).getName() : "Start";
 
             //Update info
             TextView timeView = publicTransport.findViewById(R.id.lbl_time);
+            TextView timeEndView = publicTransport.findViewById(R.id.lbl_time_end);
             TextView startDestinationView = publicTransport.findViewById(R.id.lbl_start_place);
             TextView endDestinationView = publicTransport.findViewById(R.id.lbl_end_place);
             TextView stopDuration = publicTransport.findViewById(R.id.lbl_stops_duration);
@@ -111,8 +117,10 @@ public class TravelModeViewUtils {
             stopDuration.setTextColor(Color.parseColor(segment.getColor()));
             stopFromTo.setText(segment.getName()+" to "+segment.getStops().get(segment.getNumStops()).getName());
 
-            if(isLast)
+            if(isLast) {
                 endDestinationView.setText(segment.getDescription());
+                timeEndView.setText(timeEnd);
+            }
 
             startDestinationView.setTextColor(Color.parseColor(segment.getColor()));
             stopDuration.setTextColor(Color.parseColor(segment.getColor()));

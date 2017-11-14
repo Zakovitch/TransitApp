@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     }
 
 
-
     /*
         EventBus register and unregister
      */
@@ -119,21 +118,24 @@ public class MainActivity extends AppCompatActivity implements IRoute{
      */
     @Override
     public void onRouteClicked(View rootView, int position) {
-        Log.d(TAG,"onRouteClicked =>"+position);
+
         ArrayList<Segment> currentSegment = response.getRoutes().get(position).getSegments();
 
-        //for test
-        //View walkingView = TravelModeViewUtils.getTravelModeView(currentSegment.get(0),false,getApplicationContext());
-        //View busView = TravelModeViewUtils.getTravelModeView(currentSegment.get(1),true,getApplicationContext());
-
         LinearLayout detailsRootView = rootView.findViewById(R.id.route_details_panel);
-
-        //detailsRootView.addView(walkingView);
-        //.addView(busView);
 
         for (int i=0; i<currentSegment.size();i++) {
 
             View view = TravelModeViewUtils.getTravelModeView(currentSegment.get(i),i==(currentSegment.size()-1),getApplicationContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            //align top indicator
+            if(i!=0){
+                params.setMargins(0, ViewUtils.convertDpToPx(getApplicationContext(),-17), 0, 0);
+                view.setLayoutParams(params);
+            }
             detailsRootView.addView(view);
         }
         //Visible

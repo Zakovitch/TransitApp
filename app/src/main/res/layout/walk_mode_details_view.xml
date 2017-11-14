@@ -7,14 +7,30 @@
     android:paddingRight="@dimen/card_padding"
     android:paddingLeft="@dimen/card_padding">
 
-    <TextView
-        android:id="@+id/lbl_time"
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/PrimaryTextStyle"
-        android:layout_marginRight="@dimen/routes_type_margin"
-        android:text="12:45"
-        android:textStyle="bold"/>
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/routes_type_margin">
+
+        <TextView
+            android:id="@+id/lbl_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/PrimaryTextStyle"
+            android:text="12:45"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/lbl_time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/PrimaryTextStyle"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
 
 
     <RelativeLayout
@@ -48,8 +64,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-5dp"
             />
-
-
     </RelativeLayout>
 
     <RelativeLayout

@@ -21,7 +21,7 @@ public enum TravelMode {
     @SerializedName("parking")
     PARKING,
     @SerializedName("cycling")
-    CYVLING,
+    CYCLING,
     @SerializedName("setup")
     SETUP
 

@@ -13,7 +13,10 @@ import com.zakovitch.backendmanager.model.Segment;
 import com.zakovitch.backendmanager.utils.TimeUtils;
 import com.zakovitch.bemyguide.R;
 import com.zakovitch.bemyguide.adapter.holder.RouteViewHolder;
+import com.zakovitch.bemyguide.interfaces.IRoute;
 import com.zakovitch.bemyguide.utils.ViewUtils;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     final static String TAG = "RouteAdapter";
     List<Route> routes;
     Context context;
+    IRoute iRoute;
 
-    public RouteAdapter(List<Route> routes, Context context) {
+    public RouteAdapter(List<Route> routes,IRoute iRoute ,Context context) {
         this.routes = routes;
         this.context = context;
+        this.iRoute = iRoute;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RouteViewHolder holder, int position) {
+    public void onBindViewHolder(final RouteViewHolder holder, final int position) {
 
         Route currentRoute = routes.get(position);
         holder.routeType.setText(currentRoute.getType().toString());
@@ -64,6 +69,47 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
                 holder.travelModeHolder.invalidate();
             }
         }
+
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ToDo add animations (fadein & fadeout)
+                if(holder.routeDetails.getVisibility() ==View.VISIBLE) {
+
+                    //hide FAB & divider
+                    holder.mapFab.hide();
+                    holder.divider.setVisibility(View.GONE);
+
+                    holder.expandablePanel.collapse(true);
+                    holder.expandablePanel.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
+                        @Override
+                        public void onExpansionUpdate(float expansionFraction, int state) {
+                            if (state== ExpandableLayout.State.COLLAPSED){
+
+                                holder.routeDetails.setVisibility(View.GONE);
+                                holder.routeDetails.removeAllViews();
+                            }
+                        }
+                    });
+
+
+
+                }else {
+                    holder.mapFab.show();
+                    holder.divider.setVisibility(View.VISIBLE);
+                    iRoute.onRouteClicked(holder.routeDetails, position);
+                    holder.expandablePanel.expand(true);
+                }
+            }
+        });
+
+        holder.mapFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iRoute.onMapClicked(position);
+            }
+        });
+
     }
 
     @Override

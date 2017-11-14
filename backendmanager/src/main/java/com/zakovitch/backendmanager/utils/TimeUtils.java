@@ -64,5 +64,17 @@ public class TimeUtils {
     }
 
 
+    /**
+     * Return time in format HH:mm
+     * @param dateString
+     * @return
+     */
+    public static String getTime(String dateString){
+        Date date = getDateFromString(dateString);
+        SimpleDateFormat spf= new SimpleDateFormat("HH:mm");
+        return spf.format(date);
+    }
+
+
 
 }

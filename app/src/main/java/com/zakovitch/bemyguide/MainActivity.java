@@ -1,17 +1,24 @@
 package com.zakovitch.bemyguide;
 
+import android.os.health.ServiceHealthStats;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 
 import com.zakovitch.backendmanager.DataManager;
 import com.zakovitch.backendmanager.event.OnParseDataError;
 import com.zakovitch.backendmanager.event.OnParseDataSucceeded;
 import com.zakovitch.backendmanager.model.Response;
+import com.zakovitch.backendmanager.model.Segment;
 import com.zakovitch.bemyguide.adapter.RouteAdapter;
+import com.zakovitch.bemyguide.interfaces.IRoute;
+import com.zakovitch.bemyguide.utils.TravelModeViewUtils;
+import com.zakovitch.bemyguide.utils.ViewUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -21,8 +28,10 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IRoute{
 
     final String TAG = "MainActivity";
 
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateList(){
         Log.d(TAG,"updateList called");
         if(response.getRoutes().size()>0){
-            adapter = new RouteAdapter(response.getRoutes(),this);
+            adapter = new RouteAdapter(response.getRoutes(),this,this);
             routeRecycleView.setAdapter(adapter);
             //adapter.notifyDataSetChanged();
         }
@@ -102,5 +111,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    /**
+     * When the item of route is clicked
+     */
+    @Override
+    public void onRouteClicked(View rootView, int position) {
+        Log.d(TAG,"onRouteClicked =>"+position);
+        ArrayList<Segment> currentSegment = response.getRoutes().get(position).getSegments();
+        //for test
+        View walkingView = TravelModeViewUtils.getTravelModeView(currentSegment.get(0),false,getApplicationContext());
+
+        LinearLayout detailsRootView = rootView.findViewById(R.id.route_details_panel);
+        detailsRootView.addView(walkingView);
+
+        //Visible
+        detailsRootView.setVisibility(View.VISIBLE);
+
+    }
+
+    /**
+     * When the button FAB of map is clicked show the map
+     */
+    @Override
+    public void onMapClicked(int position) {
+        Log.d(TAG,"Map Clicked "+position);
     }
 }

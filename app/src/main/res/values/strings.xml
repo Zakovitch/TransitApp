@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">BeMyGuide</string>
+    <string name="walk_mode">Walk</string>
+    <string name="time_minute">min</string>
+
+
+    <string name="walking">Walking</string>
+    <string name="setup">Setup</string>
+    <string name="driving">Driving</string>
+    <string name="parking">Parking</string>
+    <string name="cycling">Cycling</string>
+    <string name="subway">Subway</string>
+    <string name="bus">Bus</string>
+    <string name="change">Change</string>
+
+    <string name="taxi">Taxi</string>
+    <string name="public_transport">Public Transport</string>
+    <string name="car_sharing">Car Sharing</string>
+    <string name="bike_sharing">Bike Sharing</string>
+    <string name="private_bike">Private Bike</string>
+
 </resources>

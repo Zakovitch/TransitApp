@@ -68,7 +68,8 @@ public class TravelModeViewUtils {
             walkingTimeView.setText(StringUtils.getTravelModeString(segment.getTravelMode(),context)+" "+segment.getSegmentTime()+" "+context.getString(R.string.time_minute));
 
             if(isLast) {
-                endDestinationView.setText(segment.getDescription());
+
+                endDestinationView.setText(segment.getStops().get(segment.getNumStops()==0? segment.getNumStops()+1 : segment.getNumStops()).getName());
                 timeEndView.setText(timeEnd);
             }
             startDestinationView.setTextColor(Color.parseColor(segment.getColor()));

@@ -53,6 +53,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
         holder.routePrice.setText(currentRoute.getFullPrice());
         holder.routeTime.setText(TimeUtils.getTimeInString(currentRoute.getRouteTime()));
 
+        if(currentRoute.getProvider()!=null){
+            holder.powredBy.setVisibility(View.VISIBLE);
+            String provider =currentRoute.getProvider().substring(0,1).toUpperCase() + currentRoute.getProvider().substring(1);
+            holder.powredBy.setText("Powred by: "+provider);
+        }else holder.powredBy.setVisibility(View.GONE);
+
         //if there is no view in linearlayout add them
         ArrayList<Segment> segments =routes.get(position).getSegments();
 

@@ -96,7 +96,6 @@
             android:text=""
             android:textStyle="bold"
             android:layout_alignParentBottom="true" />
-
     </RelativeLayout>
 
 

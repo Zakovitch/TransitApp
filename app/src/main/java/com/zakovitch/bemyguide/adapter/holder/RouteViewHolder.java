@@ -3,6 +3,7 @@ package com.zakovitch.bemyguide.adapter.holder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class RouteViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout travelModeHolder;
     public LinearLayout routeDetails;
     public RelativeLayout rootView;
+    public TextView powredBy;
+    public ImageView powredByImg;
 
     public FloatingActionButton mapFab;
     public View divider;
@@ -41,5 +44,7 @@ public class RouteViewHolder extends RecyclerView.ViewHolder {
         mapFab = itemView.findViewById(R.id.map_fab);
         divider = itemView.findViewById(R.id.divider);
         expandablePanel = itemView.findViewById(R.id.expandable_panel);
+        powredBy = itemView.findViewById(R.id.lbl_powred_by);
+        powredByImg = itemView.findViewById(R.id.provide_icon);
     }
 }

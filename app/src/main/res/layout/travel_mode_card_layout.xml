@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="44dp"
-    android:layout_height="64dp"
+    android:layout_width="35dp"
+    android:layout_height="55dp"
     android:layout_marginRight="@dimen/routes_type_margin"
     android:background="@drawable/travel_mode_card_backgroud">
 
     <ImageView
         android:id="@+id/travel_mode_img"
-        android:layout_width="36dp"
-        android:layout_height="48dp"
+        android:layout_width="30dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="4dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"

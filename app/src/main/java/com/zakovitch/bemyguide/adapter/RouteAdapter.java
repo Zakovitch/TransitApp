@@ -14,6 +14,7 @@ import com.zakovitch.backendmanager.utils.TimeUtils;
 import com.zakovitch.bemyguide.R;
 import com.zakovitch.bemyguide.adapter.holder.RouteViewHolder;
 import com.zakovitch.bemyguide.interfaces.IRoute;
+import com.zakovitch.bemyguide.utils.StringUtils;
 import com.zakovitch.bemyguide.utils.ViewUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -48,13 +49,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     public void onBindViewHolder(final RouteViewHolder holder, final int position) {
 
         Route currentRoute = routes.get(position);
-        holder.routeType.setText(currentRoute.getType().toString());
+        holder.routeType.setText(StringUtils.getRouteTypeString(currentRoute.getType(),context));
         holder.routePrice.setText(currentRoute.getFullPrice());
         holder.routeTime.setText(TimeUtils.getTimeInString(currentRoute.getRouteTime()));
 
-        Log.d(TAG,"Route "+currentRoute.getType().toString()+ "position "+position);
-        Log.d(TAG,"Segment "+routes.get(position).getSegments().size());
-        Log.d(TAG,"Childes "+holder.travelModeHolder.getChildCount());
         //if there is no view in linearlayout add them
         ArrayList<Segment> segments =routes.get(position).getSegments();
 
@@ -63,7 +61,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
         //Add a travel mode view in the panel
         if(holder.travelModeHolder.getChildCount()==0){
             for(Segment segment : segments) {
-                Log.d(TAG,"Segment info route "+currentRoute.getType().toString());
                 View cardView = ViewUtils.getTravelModeView(segment,context);
                 holder.travelModeHolder.addView(cardView);
                 holder.travelModeHolder.invalidate();
@@ -76,23 +73,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
                 //ToDo add animations (fadein & fadeout)
                 if(holder.routeDetails.getVisibility() ==View.VISIBLE) {
 
-                    //hide FAB & divider
-                    holder.mapFab.hide();
-                    holder.divider.setVisibility(View.GONE);
-
-                    holder.expandablePanel.collapse(true);
-                    holder.expandablePanel.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
-                        @Override
-                        public void onExpansionUpdate(float expansionFraction, int state) {
-                            if (state== ExpandableLayout.State.COLLAPSED){
-
-                                holder.routeDetails.setVisibility(View.GONE);
-                                holder.routeDetails.removeAllViews();
-                            }
-                        }
-                    });
-
-
+                    hideViews(holder);
 
                 }else {
                     holder.mapFab.show();
@@ -112,8 +93,33 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
 
     }
 
+
+    private void hideViews(final RouteViewHolder holder){
+        //hide FAB & divider
+        holder.mapFab.hide();
+        holder.divider.setVisibility(View.GONE);
+
+        holder.expandablePanel.collapse(true);
+        holder.expandablePanel.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
+            @Override
+            public void onExpansionUpdate(float expansionFraction, int state) {
+                if (state== ExpandableLayout.State.COLLAPSED){
+
+                    holder.routeDetails.setVisibility(View.GONE);
+                    holder.routeDetails.removeAllViews();
+                }
+            }
+        });
+    }
+
     @Override
     public int getItemCount() {
         return routes.size();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RouteViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        hideViews(holder);
     }
 }

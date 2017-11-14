@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="8dp" />
+    <corners android:radius="10dp" />
     <padding
         android:top="@dimen/travel_mode_card_TB_padding"
         android:left="@dimen/travel_mode_card_RL_padding"
         android:bottom="@dimen/travel_mode_card_TB_padding"
         android:right="@dimen/travel_mode_card_RL_padding" />
     <size
-        android:width="40dp"
-        android:height="64dp"
+        android:width="34dp"
+        android:height="62dp"
         />
     <gradient
         android:endColor="#00a4f1"

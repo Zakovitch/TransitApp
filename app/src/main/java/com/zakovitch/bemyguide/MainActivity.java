@@ -123,14 +123,19 @@ public class MainActivity extends AppCompatActivity implements IRoute{
         ArrayList<Segment> currentSegment = response.getRoutes().get(position).getSegments();
 
         //for test
-        View walkingView = TravelModeViewUtils.getTravelModeView(currentSegment.get(0),false,getApplicationContext());
-        View busView = TravelModeViewUtils.getTravelModeView(currentSegment.get(1),true,getApplicationContext());
+        //View walkingView = TravelModeViewUtils.getTravelModeView(currentSegment.get(0),false,getApplicationContext());
+        //View busView = TravelModeViewUtils.getTravelModeView(currentSegment.get(1),true,getApplicationContext());
 
         LinearLayout detailsRootView = rootView.findViewById(R.id.route_details_panel);
 
-        detailsRootView.addView(walkingView);
-        detailsRootView.addView(busView);
+        //detailsRootView.addView(walkingView);
+        //.addView(busView);
 
+        for (int i=0; i<currentSegment.size();i++) {
+
+            View view = TravelModeViewUtils.getTravelModeView(currentSegment.get(i),i==(currentSegment.size()-1),getApplicationContext());
+            detailsRootView.addView(view);
+        }
         //Visible
         detailsRootView.setVisibility(View.VISIBLE);
 

@@ -23,6 +23,11 @@ public class TravelModeViewUtils {
 
         switch (segment.getTravelMode()){
             case WALKING:
+            case CHANGE:
+            case SETUP:
+            case DRIVING:
+            case PARKING:
+            case CYCLING:
                 return getWalkingView(segment,isLast,context);
             case SUBWAY:
             case BUS:
@@ -58,9 +63,9 @@ public class TravelModeViewUtils {
 
             timeView.setText(time);
             startDestinationView.setText(startDestination);
-            walkingTimeView.setText(StringUtils.getTravelModeString(segment.getTravelMode(),context)+" "+segment.getSegmentTime()+context.getString(R.string.time_minute));
+            walkingTimeView.setText(StringUtils.getTravelModeString(segment.getTravelMode(),context)+" "+segment.getSegmentTime()+" "+context.getString(R.string.time_minute));
             if(isLast)
-                endDestinationView.setText(segment.getDescription());
+                endDestinationView.setText(segment.getStops().get(segment.getNumStops()).getName());
 
             startDestinationView.setTextColor(Color.parseColor(segment.getColor()));
             walkingTimeView.setTextColor(Color.parseColor(segment.getColor()));

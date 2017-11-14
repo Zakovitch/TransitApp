@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BeMyGuide</string>
     <string name="walk_mode">Walk</string>
-    <string name="time_minute">min</string>
+    <string name="time_minute">mins</string>
 
 
     <string name="walking">Walking</string>

@@ -57,7 +57,7 @@ public class TimeUtils {
         if(elapsedHours >= 1)
             dateDiffString +=elapsedHours+"h";
         if(elapsedMinutes > 0)
-            dateDiffString +=elapsedMinutes+"m";
+            dateDiffString +=elapsedMinutes+" mins";
 
         return dateDiffString;
 

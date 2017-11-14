@@ -15,6 +15,7 @@ import com.zakovitch.backendmanager.event.OnParseDataError;
 import com.zakovitch.backendmanager.event.OnParseDataSucceeded;
 import com.zakovitch.backendmanager.model.Response;
 import com.zakovitch.backendmanager.model.Segment;
+import com.zakovitch.backendmanager.model.enums.TravelMode;
 import com.zakovitch.bemyguide.adapter.RouteAdapter;
 import com.zakovitch.bemyguide.interfaces.IRoute;
 import com.zakovitch.bemyguide.utils.TravelModeViewUtils;
@@ -120,11 +121,15 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     public void onRouteClicked(View rootView, int position) {
         Log.d(TAG,"onRouteClicked =>"+position);
         ArrayList<Segment> currentSegment = response.getRoutes().get(position).getSegments();
+
         //for test
         View walkingView = TravelModeViewUtils.getTravelModeView(currentSegment.get(0),false,getApplicationContext());
+        View busView = TravelModeViewUtils.getTravelModeView(currentSegment.get(1),true,getApplicationContext());
 
         LinearLayout detailsRootView = rootView.findViewById(R.id.route_details_panel);
+
         detailsRootView.addView(walkingView);
+        detailsRootView.addView(busView);
 
         //Visible
         detailsRootView.setVisibility(View.VISIBLE);

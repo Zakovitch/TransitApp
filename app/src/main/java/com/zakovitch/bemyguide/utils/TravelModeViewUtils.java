@@ -19,11 +19,14 @@ import com.zakovitch.bemyguide.R;
 
 public class TravelModeViewUtils {
 
-    public static View getTravelModeView(Segment segment,boolean isFirst ,Context context){
+    public static View getTravelModeView(Segment segment,boolean isLast ,Context context){
 
         switch (segment.getTravelMode()){
             case WALKING:
-                return getWalkingView(segment,isFirst,context);
+                return getWalkingView(segment,isLast,context);
+            case SUBWAY:
+            case BUS:
+                return getPublicTransportView(segment,isLast,context);
         }
 
         return null;
@@ -34,11 +37,11 @@ public class TravelModeViewUtils {
     /**
      * Return walking view
      * @param segment current Segment
-     * @param isFirst if is the first segment
+     * @param isLast if is the first segment
      * @param context
      * @return
      */
-    private static View getWalkingView(Segment segment,boolean isFirst,Context context) {
+    private static View getWalkingView(Segment segment,boolean isLast,Context context) {
         LinearLayout walkingView = (LinearLayout) inflateView(context,R.layout.walk_mode_details_view);
 
         if(walkingView!=null){
@@ -49,16 +52,15 @@ public class TravelModeViewUtils {
             //Update info
             TextView timeView = walkingView.findViewById(R.id.lbl_time);
             TextView startDestinationView = walkingView.findViewById(R.id.lbl_start_place);
+            TextView endDestinationView = walkingView.findViewById(R.id.lbl_end_place);
             TextView walkingTimeView = walkingView.findViewById(R.id.lbl_walking_time);
 
 
             timeView.setText(time);
             startDestinationView.setText(startDestination);
             walkingTimeView.setText(StringUtils.getTravelModeString(segment.getTravelMode(),context)+" "+segment.getSegmentTime()+context.getString(R.string.time_minute));
-
-            startDestinationView.setTypeface(startDestinationView.getTypeface(), isFirst ? Typeface.NORMAL : Typeface.BOLD);
-            timeView.setTypeface(timeView.getTypeface(), isFirst ? Typeface.NORMAL : Typeface.BOLD);
-
+            if(isLast)
+                endDestinationView.setText(segment.getDescription());
 
             startDestinationView.setTextColor(Color.parseColor(segment.getColor()));
             walkingTimeView.setTextColor(Color.parseColor(segment.getColor()));
@@ -67,6 +69,53 @@ public class TravelModeViewUtils {
             setColorForIndicators(walkingView,segment.getColor());
 
             return walkingView;
+        }else return null;
+
+    }
+
+
+    /**
+     * Public transport View creator for Bus & Subway
+     * @param segment
+     * @param isLast
+     * @param context
+     * @return
+     */
+    private static View getPublicTransportView(Segment segment,boolean isLast,Context context) {
+        LinearLayout publicTransport = (LinearLayout) inflateView(context,R.layout.bus_subway_mode_details_view);
+
+        if(publicTransport!=null){
+
+            String time = (segment.getStops().get(0)!=null) ? TimeUtils.getTime(segment.getStops().get(0).getDatetime()) : "N/A";
+            String startDestination = (segment.getStops().get(0).getName()!=null) ? segment.getStops().get(0).getName() : "Start";
+
+            //Update info
+            TextView timeView = publicTransport.findViewById(R.id.lbl_time);
+            TextView startDestinationView = publicTransport.findViewById(R.id.lbl_start_place);
+            TextView endDestinationView = publicTransport.findViewById(R.id.lbl_end_place);
+            TextView stopDuration = publicTransport.findViewById(R.id.lbl_stops_duration);
+            TextView stopFromTo = publicTransport.findViewById(R.id.lbl__stops_from_to);
+
+
+
+            timeView.setText(time);
+            startDestinationView.setText(startDestination);
+
+            String stopsdurationTime = segment.getNumStops() +" Stops "+TimeUtils.getTimeInString(segment.getSegmentTime());
+            stopDuration.setText(stopsdurationTime);
+            stopDuration.setTextColor(Color.parseColor(segment.getColor()));
+            stopFromTo.setText(segment.getName()+" to "+segment.getStops().get(segment.getNumStops()).getName());
+
+            if(isLast)
+                endDestinationView.setText(segment.getDescription());
+
+            startDestinationView.setTextColor(Color.parseColor(segment.getColor()));
+            stopDuration.setTextColor(Color.parseColor(segment.getColor()));
+
+            //Set Indicator colors
+            setColorForIndicators(publicTransport,segment.getColor());
+
+            return publicTransport;
         }else return null;
 
     }
@@ -91,8 +140,10 @@ public class TravelModeViewUtils {
 
         View indicatorHeader = travelModeView.findViewById(R.id.indicator_header);
         View indicatorBody = travelModeView.findViewById(R.id.indicator_body);
+        View indicatorBottom = travelModeView.findViewById(R.id.indicator_bottom);
 
         indicatorBody.setBackgroundColor(Color.parseColor(color));
         indicatorHeader.getBackground().setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN);
+        indicatorBottom.getBackground().setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN);
     }
 }

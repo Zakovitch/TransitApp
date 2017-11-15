@@ -2,6 +2,7 @@ package com.zakovitch.bemyguide.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -20,7 +21,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
+import com.zakovitch.backendmanager.model.Segment;
 import com.zakovitch.bemyguide.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Zakovitch on 15/11/2017.
@@ -31,6 +39,9 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
     static final String TAG = "MapFragment";
 
     private GoogleMap mMap;
+
+    private ArrayList<Segment> segment;
+
 
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
@@ -87,10 +98,24 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
         Log.d(TAG,"onMapReady");
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //Draw polylines
+        for (Segment seg:segment) {
+            if(seg.getPolyline()!=null){
+                List<LatLng> points = PolyUtil.decode(seg.getPolyline());
+                googleMap.addPolyline(new PolylineOptions()
+                        .clickable(true)
+                        .width(30)
+                        .geodesic(true)
+                        .color(Color.parseColor(seg.getColor()))
+                        .addAll(points));
+
+                mMap.addMarker(new MarkerOptions().position(points.get(0)).title(seg.getName()!=null ? seg.getName() : seg.getStops().get(0).getName()));
+            }
+        }
+
+        //Zoom map to the drawed polyline
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.511305, 13.40235), 12));
+
     }
 
     @Override
@@ -102,4 +127,13 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
         if (f != null)
             getFragmentManager().beginTransaction().remove(f).commit();
     }
+
+    public ArrayList<Segment> getSegment() {
+        return segment;
+    }
+
+    public void setSegment(ArrayList<Segment> segment) {
+        this.segment = segment;
+    }
+
 }

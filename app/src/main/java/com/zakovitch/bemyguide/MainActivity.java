@@ -174,7 +174,8 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     public void onMapClicked(int position) {
         Log.d(TAG,"Map Clicked "+position);
         MapFragment mapFragment = new MapFragment();
-        mapFragment.show(getSupportFragmentManager(),null);
+        mapFragment.setSegment(response.getRoutes().get(position).getSegments());
+        mapFragment.show(getSupportFragmentManager(),mapFragment.getTag());
 
     }
 

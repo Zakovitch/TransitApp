@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    tools:context="com.zakovitch.bemyguide.MainActivity">
+    android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/route_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/item_route"
-        />
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/route_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_route"
+            />
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_orange_light"
+        android:clipToPadding="true"
+        android:clickable="true"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World"/>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -50,4 +50,7 @@ dependencies {
     //
     compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 
+    compile 'com.google.android.gms:play-services-maps:+'
+    compile 'com.google.android.gms:play-services:+'
+
 }

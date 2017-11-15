@@ -1,7 +1,9 @@
 package com.zakovitch.bemyguide;
 
+import android.content.DialogInterface;
 import android.os.health.ServiceHealthStats;
 import android.provider.ContactsContract;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import com.zakovitch.backendmanager.model.Response;
 import com.zakovitch.backendmanager.model.Segment;
 import com.zakovitch.backendmanager.model.enums.TravelMode;
 import com.zakovitch.bemyguide.adapter.RouteAdapter;
+import com.zakovitch.bemyguide.fragment.MapFragment;
 import com.zakovitch.bemyguide.interfaces.IRoute;
 import com.zakovitch.bemyguide.utils.TravelModeViewUtils;
 import com.zakovitch.bemyguide.utils.ViewUtils;
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     LinearLayoutManager linearLayoutManager;
 
 
+    @ViewById(R.id.bottom_sheet)
+    View bottomSheet;
+    BottomSheetBehavior mBottomSheetBehavior;
     //initialize the UI
     @AfterViews
     void initUI(){
@@ -55,6 +61,24 @@ public class MainActivity extends AppCompatActivity implements IRoute{
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         routeRecycleView.setLayoutManager(linearLayoutManager);
         routeRecycleView.setHasFixedSize(true);
+
+        //Bottom sheet
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBottomSheetBehavior.setPeekHeight(0);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(View bottomSheet, int newState) {
+                Log.d(TAG,"onStateChaned "+newState);
+            }
+
+            @Override
+            public void onSlide(View bottomSheet, float slideOffset) {
+                Log.d(TAG,"onSlide "+slideOffset);
+            }
+        });
+
         getResponse();
     }
 
@@ -149,5 +173,12 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     @Override
     public void onMapClicked(int position) {
         Log.d(TAG,"Map Clicked "+position);
+        MapFragment mapFragment = new MapFragment();
+        mapFragment.show(getSupportFragmentManager(),null);
+
     }
+
+
+
+
 }

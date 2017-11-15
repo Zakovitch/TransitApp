@@ -19,4 +19,8 @@
     <string name="bike_sharing">Bike Sharing</string>
     <string name="private_bike">Private Bike</string>
 
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyALRyAapi8v-CzMW28VwVa5lqtw5JybcSw</string>
+    <string name="title_activity_maps">Map</string>
+
 </resources>

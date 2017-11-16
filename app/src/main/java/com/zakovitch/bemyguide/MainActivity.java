@@ -1,8 +1,5 @@
 package com.zakovitch.bemyguide;
 
-import android.content.DialogInterface;
-import android.os.health.ServiceHealthStats;
-import android.provider.ContactsContract;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +14,6 @@ import com.zakovitch.backendmanager.event.OnParseDataError;
 import com.zakovitch.backendmanager.event.OnParseDataSucceeded;
 import com.zakovitch.backendmanager.model.Response;
 import com.zakovitch.backendmanager.model.Segment;
-import com.zakovitch.backendmanager.model.enums.TravelMode;
 import com.zakovitch.bemyguide.adapter.RouteAdapter;
 import com.zakovitch.bemyguide.fragment.MapFragment;
 import com.zakovitch.bemyguide.interfaces.IRoute;
@@ -174,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     public void onMapClicked(int position) {
         Log.d(TAG,"Map Clicked "+position);
         MapFragment mapFragment = new MapFragment();
-        mapFragment.setSegment(response.getRoutes().get(position).getSegments());
+        mapFragment.setSegments(response.getRoutes().get(position).getSegments());
         mapFragment.show(getSupportFragmentManager(),mapFragment.getTag());
 
     }

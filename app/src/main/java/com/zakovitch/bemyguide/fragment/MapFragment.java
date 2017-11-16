@@ -1,19 +1,15 @@
 package com.zakovitch.bemyguide.fragment;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,11 +17,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.zakovitch.backendmanager.model.Segment;
 import com.zakovitch.bemyguide.R;
+import com.zakovitch.bemyguide.utils.ViewUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,11 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
 
     private GoogleMap mMap;
 
-    private ArrayList<Segment> segment;
+    private ArrayList<Segment> segments;
+
+    private LinearLayout panel;
+
+    private TextView routeType;
 
 
 
@@ -48,14 +50,14 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
 
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            Log.d(TAG,"State "+newState);
+
 
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                 dismiss();
             }
 
             if(newState == BottomSheetBehavior.STATE_EXPANDED){
-                //initMap();
+
             }
 
         }
@@ -84,8 +86,12 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
+        //init route panel that contains all type of routes
+        panel = contentView.findViewById(R.id.routes_panel);
+        initRoutePanel();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()// getActivity().getSupportFragmentManager()
+        //init the mapfragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
                 .findFragmentById(R.id.map_panel);
         mapFragment.getMapAsync(this);
 
@@ -93,13 +99,17 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
     }
 
 
+    /**
+     * OnMapReady called when the map is loaded
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG,"onMapReady");
         mMap = googleMap;
 
         //Draw polylines
-        for (Segment seg:segment) {
+        for (Segment seg: segments) {
             if(seg.getPolyline()!=null){
                 List<LatLng> points = PolyUtil.decode(seg.getPolyline());
                 googleMap.addPolyline(new PolylineOptions()
@@ -114,26 +124,63 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
         }
 
         //Zoom map to the drawed polyline
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.511305, 13.40235), 12));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.511305, 13.40235), 12));
 
+    }
+
+
+    /**
+     * Create different views that represent the type of travel Bus,Walking,...
+     * and put them in the header of the fragment
+     */
+    public void initRoutePanel(){
+
+        for (final Segment seg : segments){
+            View segView = ViewUtils.getTravelModeView(seg,getContext());
+            if(segView!=null) {
+                panel.addView(segView);
+                segView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Zoom the map to the first stop
+                        moveMap(new LatLng(seg.getStops().get(0).getLat(),seg.getStops().get(0).getLng()));
+                    }
+                });
+            }
+        }
+    }
+
+
+    /**
+     * Animate the camera for the map to latLng
+     */
+    private void moveMap(LatLng latLng){
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG,"onDestroyView");
+
+        /**
+         * When the fragment is being destroyed we remove the current
+         * map_fragment SupportMapFragment from the Fragment manager
+         * to avoid the same map_fragment in the fragment manager
+         */
         SupportMapFragment f = (SupportMapFragment) getFragmentManager()
                 .findFragmentById(R.id.map_panel);
         if (f != null)
             getFragmentManager().beginTransaction().remove(f).commit();
     }
 
-    public ArrayList<Segment> getSegment() {
-        return segment;
+
+
+    public ArrayList<Segment> getSegments() {
+        return segments;
     }
 
-    public void setSegment(ArrayList<Segment> segment) {
-        this.segment = segment;
+    public void setSegments(ArrayList<Segment> segments) {
+        this.segments = segments;
     }
 
 }

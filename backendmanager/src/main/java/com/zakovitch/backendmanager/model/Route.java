@@ -88,13 +88,13 @@ public class Route {
         return properties;
     }*/
 
-    public void setProperties(@Nullable Properties properties) {
-        this.properties = properties;
-    }
-
     @Nullable
     public Price getPrice() {
         return price;
+    }
+
+    public void setPrice(@Nullable Price price) {
+        this.price = price;
     }
 
     /*
@@ -104,10 +104,6 @@ public class Route {
         if(price!=null){
             return price.getAmount()+" "+price.getCyrrency();
         }else return "";
-    }
-
-    public void setPrice(@Nullable Price price) {
-        this.price = price;
     }
 
     public int getRouteTime() {
@@ -146,5 +142,9 @@ public class Route {
             default:
                 return new RouteProperties();
         }
+    }
+
+    public void setProperties(@Nullable Properties properties) {
+        this.properties = properties;
     }
 }

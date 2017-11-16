@@ -31,15 +31,6 @@ public class DataManager {
         Gson gson = new Gson();
         Response response = gson.fromJson(rd, Response.class);
         if(response!=null){
-            Log.d(TAG,"***************************************");
-            Log.d(TAG,"Number of routes "+response.getRoutes().size());
-            Log.d(TAG,"Provider "+response.getRoutes().get(3).getProvider());
-            Log.d(TAG,"Provider obj"+response.getRoutes().get(3).getProvider(response.getProviders()).getDisclaimer());
-            Log.d(TAG,"Type "+response.getRoutes().get(3).getType());
-            Log.d(TAG,"Price "+response.getRoutes().get(3).getFullPrice());
-            Log.d(TAG,"TravelMode "+response.getRoutes().get(3).getSegments().get(3).getTravelMode());
-            Log.d(TAG,"TravelMode "+((CarSharingProperties)response.getRoutes().get(3).getProperties()).getAddress());
-
             //Post succeed event
             EventBus.getDefault().post(new OnParseDataSucceeded(response));
 

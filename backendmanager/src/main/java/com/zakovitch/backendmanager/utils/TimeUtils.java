@@ -32,6 +32,13 @@ public class TimeUtils {
     }
 
 
+    /**
+     * Return different time between two date in minutes
+     *
+     * @param startDate
+     * @param endDate
+     * @return time in minute
+     */
     public static int getTimeDifferentInMinutes(Date startDate, Date endDate){
 
         long different = endDate.getTime() - startDate.getTime();

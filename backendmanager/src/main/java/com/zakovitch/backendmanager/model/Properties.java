@@ -200,27 +200,4 @@ public class Properties {
         this.doors = doors;
     }
 
-
-    public RouteProperties getProperties(RouteType routeType){
-
-        switch (routeType) {
-            case BIKE_SHARING:
-                return new BikeSharingProperties(getId(),getAvailableBikes());
-
-            case CAR_SHARING:
-                return new CarSharingProperties(getAddress(),getModel(),getLicensePlate(),getFuelLevel(),getEngineType(),getInternalCleanliness(),getDescription(),getSeats(),getDoors());
-
-            case TAXI:
-                return new TaxiProperties(getCompanies());
-
-            case PRIVATE_BIKE:
-                return new PrivateBikeProperties();
-
-            case PUBLIC_TRANSPORT:
-                return new PublicTransportProperties();
-
-            default:
-                return new RouteProperties();
-        }
-    }
 }

@@ -106,6 +106,11 @@ public class Route {
         }else return "";
     }
 
+    /**
+     * Get full route time in minutes by make sum for all segments time
+     *
+     * @return
+     */
     public int getRouteTime() {
         int totalTime =0;
 
@@ -121,6 +126,9 @@ public class Route {
         this.routeTime = routeTime;
     }
 
+    /**
+     * Return the propertie by the route type
+     */
     public RouteProperties getProperties() {
 
         switch (type) {

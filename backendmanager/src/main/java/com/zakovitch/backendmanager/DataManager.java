@@ -18,12 +18,18 @@ import java.io.Reader;
 
 /**
  * Created by Zakovitch on 12/11/2017.
+ * Class that manage the data response and parse it
  */
 
 public class DataManager {
 
     public static String TAG ="TransitApp";
 
+    /**
+     * Methode get the response fom Json file and parse it
+     *
+     * @param context
+     */
     public static void getResponse(Context context){
 
         InputStream raw =  context.getResources().openRawResource(R.raw.data);

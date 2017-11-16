@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Zakovitch on 12/11/2017.
+ * Travel Mode enum
  */
 
 public enum TravelMode {

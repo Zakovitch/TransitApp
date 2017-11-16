@@ -133,6 +133,11 @@ public class Segment {
         this.polyline = polyline;
     }
 
+    /**
+     * Calculate segment time by make a sum of all stops time duration
+     *
+     * @return segment time in minutes
+     */
     public int getSegmentTime() {
         if(numStops >=0){
             if (numStops == 0) numStops++;

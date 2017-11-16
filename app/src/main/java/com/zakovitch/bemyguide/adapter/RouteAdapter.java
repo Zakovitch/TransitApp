@@ -29,8 +29,11 @@ import java.util.List;
 public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
 
     final static String TAG = "RouteAdapter";
+
     List<Route> routes;
     Context context;
+
+    //Interface to handle the list item click
     IRoute iRoute;
 
     public RouteAdapter(List<Route> routes,IRoute iRoute ,Context context) {
@@ -56,12 +59,13 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
         if(currentRoute.getProvider()!=null){
             holder.powredBy.setVisibility(View.VISIBLE);
             String provider =currentRoute.getProvider().substring(0,1).toUpperCase() + currentRoute.getProvider().substring(1);
-            holder.powredBy.setText("Powred by: "+provider);
+            holder.powredBy.setText("Powered by: " + provider);
         }else holder.powredBy.setVisibility(View.GONE);
 
         //if there is no view in linearlayout add them
         ArrayList<Segment> segments =routes.get(position).getSegments();
 
+        //remove all views in the travelModeHolder to avoid the repetition of the view inside the panel
         holder.travelModeHolder.removeAllViews();
 
         //Add a travel mode view in the panel
@@ -69,7 +73,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
             for(Segment segment : segments) {
                 View cardView = ViewUtils.getTravelModeView(segment,context);
                 holder.travelModeHolder.addView(cardView);
-                holder.travelModeHolder.invalidate();
             }
         }
 
@@ -90,6 +93,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
             }
         });
 
+        //when the fab map icon is clicked
         holder.mapFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,6 +104,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     }
 
 
+    /**
+     * Hide the expandable panel that host the timeline
+     *
+     * @param holder
+     */
     private void hideViews(final RouteViewHolder holder){
         //hide FAB & divider
         holder.mapFab.hide();

@@ -16,6 +16,7 @@ import org.w3c.dom.Text;
 
 /**
  * Created by Zakovitch on 13/11/2017.
+ * View Holder class for the route_item layout
  */
 
 public class RouteViewHolder extends RecyclerView.ViewHolder {

@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements IRoute{
 
     @ViewById(R.id.bottom_sheet)
     View bottomSheet;
+
     BottomSheetBehavior mBottomSheetBehavior;
+
     //initialize the UI
     @AfterViews
     void initUI(){
@@ -75,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements IRoute{
             }
         });
 
+        // Get and parse response
         getResponse();
     }
 
     @Background
     void getResponse(){
         //ToDo start loading view
-        Log.d(TAG,"getResponse called");
         DataManager.getResponse(this);
     }
 
@@ -92,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements IRoute{
     @Subscribe
     public void onEventMainThread(OnParseDataSucceeded event) {
         //ToDo stop loading view
-        Log.d(TAG,"OnParseDataSucceeded called");
         response = event.getResponse();
         updateList();
     }
@@ -109,11 +110,10 @@ public class MainActivity extends AppCompatActivity implements IRoute{
      */
     @UiThread
     public void updateList(){
-        Log.d(TAG,"updateList called");
+
         if(response.getRoutes().size()>0){
             adapter = new RouteAdapter(response.getRoutes(),this,this);
             routeRecycleView.setAdapter(adapter);
-            //adapter.notifyDataSetChanged();
         }
     }
 

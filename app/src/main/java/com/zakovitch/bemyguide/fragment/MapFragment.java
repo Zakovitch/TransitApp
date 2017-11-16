@@ -1,7 +1,6 @@
 package com.zakovitch.bemyguide.fragment;
 
 import android.app.Dialog;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,13 +28,12 @@ import com.zakovitch.backendmanager.model.Stop;
 import com.zakovitch.bemyguide.R;
 import com.zakovitch.bemyguide.utils.ViewUtils;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Zakovitch on 15/11/2017.
+ * Created by Zakovitch on 15/11/2017
  */
 
 public class MapFragment extends BottomSheetDialogFragment implements OnMapReadyCallback{
@@ -144,6 +141,7 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
         Stop lastStop = lasSegment.getStops().get(lasSegment.getStops().size()-1);
         LatLng endtLatLng = new LatLng(lastStop.getLat(),lastStop.getLng());
 
+        //Add start and the end place marker to the map
         mMap.addMarker(new MarkerOptions().position(startLatLng).icon(generateIcon("Start",Color.BLACK)));
         mMap.addMarker(new MarkerOptions().position(endtLatLng).icon(generateIcon("End",Color.BLACK)));
 

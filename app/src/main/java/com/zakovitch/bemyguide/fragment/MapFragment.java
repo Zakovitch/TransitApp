@@ -1,13 +1,16 @@
 package com.zakovitch.bemyguide.fragment;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,11 +18,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.ui.IconGenerator;
 import com.zakovitch.backendmanager.model.Segment;
+import com.zakovitch.backendmanager.model.Stop;
 import com.zakovitch.bemyguide.R;
 import com.zakovitch.bemyguide.utils.ViewUtils;
 
@@ -42,7 +49,7 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
 
     private LinearLayout panel;
 
-    private TextView routeType;
+    private FrameLayout bottomSheet;
 
 
 
@@ -96,6 +103,14 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
         mapFragment.getMapAsync(this);
 
 
+
+        BottomSheetDialog d = (BottomSheetDialog) dialog;
+        // This is gotten directly from the source of BottomSheetDialog
+        // in the wrapInBottomSheet() method
+        bottomSheet = (FrameLayout) d.findViewById(android.support.design.R.id.design_bottom_sheet);
+
+
+
     }
 
 
@@ -119,12 +134,22 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
                         .color(Color.parseColor(seg.getColor()))
                         .addAll(points));
 
-                mMap.addMarker(new MarkerOptions().position(points.get(0)).title(seg.getName()!=null ? seg.getName() : seg.getStops().get(0).getName()));
+                //mMap.addMarker(new MarkerOptions().position(points.get(0)).title(seg.getName()!=null ? seg.getName() : seg.getStops().get(0).getName()));
             }
         }
 
+        LatLng startLatLng = new LatLng(segments.get(0).getStops().get(0).getLat(),segments.get(0).getStops().get(0).getLng());
+
+        Segment lasSegment = segments.get(segments.size()-1);
+        Stop lastStop = lasSegment.getStops().get(lasSegment.getStops().size()-1);
+        LatLng endtLatLng = new LatLng(lastStop.getLat(),lastStop.getLng());
+
+        mMap.addMarker(new MarkerOptions().position(startLatLng).icon(generateIcon("Start",Color.BLACK)));
+        mMap.addMarker(new MarkerOptions().position(endtLatLng).icon(generateIcon("End",Color.BLACK)));
+
         //Zoom map to the drawed polyline
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.511305, 13.40235), 12));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng, 12));
+
 
     }
 
@@ -142,6 +167,9 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
                 segView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        // Right here!
+                        BottomSheetBehavior.from(bottomSheet)
+                                .setState(BottomSheetBehavior.STATE_EXPANDED);
                         //Zoom the map to the first stop
                         moveMap(new LatLng(seg.getStops().get(0).getLat(),seg.getStops().get(0).getLng()));
                     }
@@ -156,6 +184,21 @@ public class MapFragment extends BottomSheetDialogFragment implements OnMapReady
      */
     private void moveMap(LatLng latLng){
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
+
+
+    /**
+     * Generate icon with a text to put it in the marker for the map
+     * @param text
+     * @param color
+     * @return
+     */
+    private BitmapDescriptor generateIcon(String text, int color){
+        IconGenerator iconGenerator = new IconGenerator(getContext());
+        iconGenerator.makeIcon(text);
+        iconGenerator.setColor(color);
+        iconGenerator.setTextAppearance(R.style.MapIndicatorStyle);
+        return BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon());
     }
 
     @Override

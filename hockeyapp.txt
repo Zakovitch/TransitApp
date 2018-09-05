@@ -1,1 +1,2 @@
 Changelog Test Hockeyapp with Jenkins
+1.5 version

@@ -9,7 +9,7 @@ android {
         applicationId "com.zakovitch.bemyguide"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
+        versionCode 3
         versionName "1.5"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
